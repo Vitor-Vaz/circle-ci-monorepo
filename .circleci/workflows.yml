@@ -1,0 +1,65 @@
+version: 2.1
+
+orbs:
+  azure-cli: circleci/azure-cli@1.1.0
+  docker: circleci/docker@1.5.0
+
+parameters:
+  project-one-modified:
+    type: boolean
+    default: false
+  project-two-modified:
+    type: boolean
+    default: false
+
+commands:
+  azure-cli-install-login:
+    steps:
+      - run:
+          name: install azure cli
+          command: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      - azure-cli/login-with-service-principal
+  azure-functions-core-tools-install:
+    steps:
+      - run:
+          name: install azure functions core tools
+          command: |
+            curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+            sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+            sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-$(lsb_release -cs)-prod $(lsb_release -cs) main" > /etc/apt/sources.list.d/dotnetdev.list'
+            sudo apt update
+            sudo apt install -y --no-install-recommends azure-functions-core-tools-3
+
+jobs:
+  say-project-one:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Say hello Project One"
+          command: "echo Project One Has Been Modified!"
+  say-project-two:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Say hello Project two"
+          command: "echo Project Two Has Been Modified!"
+
+workflows:
+  project-one-modified:
+    when:
+      or:
+        - << pipeline.parameters.project-one-modified>>
+    jobs:
+      - say-project-one
+ 
+  project-two-modified:
+    when:
+      or:
+        - << pipeline.parameters.project-two-modified>>
+    jobs:
+      - say-project-two
+
