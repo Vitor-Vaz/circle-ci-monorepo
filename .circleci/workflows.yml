@@ -55,17 +55,11 @@ workflows:
         - << pipeline.parameters.project-one-modified>>
     jobs:
       - say-project-one
-      - deploy-site-api:
-          filters:
-            branches:
-              only: master
+ 
   project-two-modified:
     when:
       or:
         - << pipeline.parameters.project-two-modified>>
     jobs:
       - say-project-two
-      - deploy-site-api:
-          filters:
-            branches:
-              only: master
+
