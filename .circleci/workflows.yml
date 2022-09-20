@@ -11,9 +11,7 @@ parameters:
   project-two-modified:
     type: boolean
     default: false
-  testing-parameter:
-    type: string
-    default: ""
+
 
 
 commands:
@@ -52,6 +50,10 @@ jobs:
           name: "Say hello Project two"
           command: "echo Project Two Has Been Modified!"
   testing:
+    parameter:
+      testing-parameter:
+        type: string
+        default: ""
     docker:
       - image: cimg/base:stable
     steps:
@@ -65,10 +67,7 @@ workflows:
     jobs:
       - say-project-one
       - testing:
-          testing-parameter:
-              type: string
-              default: "hello test"
- 
+          testing-parameter: "hello test"
   project-two-modified:
     when: << pipeline.parameters.project-two-modified>>
     jobs:
