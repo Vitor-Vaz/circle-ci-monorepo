@@ -50,16 +50,12 @@ jobs:
 
 workflows:
   project-one-modified:
-    when:
-      or:
-        - << pipeline.parameters.project-one-modified>>
+    when: << pipeline.parameters.project-one-modified>>
     jobs:
       - say-project-one
  
   project-two-modified:
-    when:
-      or:
-        - << pipeline.parameters.project-two-modified>>
+    when: << pipeline.parameters.project-two-modified>>
     jobs:
       - say-project-two
 
