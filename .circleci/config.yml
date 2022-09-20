@@ -11,23 +11,3 @@ workflows:
             project-one/.* project-one-modified true
             project-two/.* project-two-modified true
           config-path: .circleci/workflows.yml
-
-
-
-# jobs:
-#   say-hello:
-
-#     docker:
-#       - image: cimg/base:stable
-
-#     steps:
-#       - checkout
-#       - run:
-#           name: "Say hello"
-#           command: "echo Hello, World!"
-
-
-# workflows:
-#   say-hello-workflow:
-#     jobs:
-#       - say-hello

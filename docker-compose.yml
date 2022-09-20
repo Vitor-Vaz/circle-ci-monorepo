@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres:13.1-alpine
+    environment:
+      POSTGRES_USER: circle-ci-monorepo
+      POSTGRES_PASSWORD: circle-ci-monorepo
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  database:
