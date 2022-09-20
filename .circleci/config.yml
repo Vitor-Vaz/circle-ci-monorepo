@@ -8,6 +8,6 @@ workflows:
       - path-filtering/filter:
           base-revision: master
           mapping: |
-            project-one/.* project-one-modified true
+            project_one/.* project-one-modified true
             project-two/.* project-two-modified true
           config-path: .circleci/workflows.yml
