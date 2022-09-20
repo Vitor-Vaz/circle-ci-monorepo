@@ -11,7 +11,7 @@ parameters:
   project-two-modified:
     type: boolean
     default: false
-    
+
 commands:
   azure-cli-install-login:
     steps:
@@ -48,10 +48,9 @@ jobs:
           name: "Say hello Project two"
           command: "echo Project Two Has Been Modified!"
   testing:
-    parameter:
+    parameters:
       testing-parameter:
         type: string
-        default: ""
     docker:
       - image: cimg/base:stable
     steps:
