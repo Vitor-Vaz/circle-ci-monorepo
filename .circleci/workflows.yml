@@ -11,6 +11,10 @@ parameters:
   project-two-modified:
     type: boolean
     default: false
+  testing-parameter:
+    type: string
+    default: ""
+
 
 commands:
   azure-cli-install-login:
@@ -47,12 +51,22 @@ jobs:
       - run:
           name: "Say hello Project two"
           command: "echo Project Two Has Been Modified!"
+  testing:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          command: "echo << pipeline.parameters.testing-parameter >>"
 
 workflows:
   project-one-modified:
     when: << pipeline.parameters.project-one-modified>>
     jobs:
       - say-project-one
+      - testing:
+          testing-parameter:
+            value: "hello test"
  
   project-two-modified:
     when: << pipeline.parameters.project-two-modified>>
