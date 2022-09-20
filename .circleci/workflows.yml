@@ -56,7 +56,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: "echo << pipeline.parameters.testing-parameter >>"
+          command: "echo << parameters.testing-parameter >>"
 
 workflows:
   project-one-modified:
