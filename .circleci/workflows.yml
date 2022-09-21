@@ -62,11 +62,11 @@ jobs:
         type: string
     working_directory: << parameters.path-to-build>>
     steps:
+      - checkout:
+        path: ~/circle-ci-monorepo
       - run: ls
       - run: pwd
       - run: apk add -U g++ git
-      - checkout:
-          path: ~/circle-ci-monorepo
       - run: cd << parameters.path-to-build >>
       - run: ls
       - run: pwd
