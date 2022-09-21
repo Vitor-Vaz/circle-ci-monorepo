@@ -8,6 +8,12 @@ executors:
           DOCKER_ENV: test
           MIX_ENV: test
 
+aliases:
+  - &mix_local_hex_and_rebar
+    run: |
+      mix local.hex --force
+      mix local.rebar --force
+
 orbs:
   azure-cli: circleci/azure-cli@1.1.0
   docker: circleci/docker@1.5.0
@@ -64,12 +70,8 @@ jobs:
     steps:
       - checkout:
           path: ~/circle-ci-monorepo
-      - run: ls
-      - run: pwd
       - run: apk add -U g++ git
-      - run: cd << parameters.path-to-build >>
-      - run: ls
-      - run: pwd
+      - *mix_local_hex_and_rebar
       - run: mix do deps.get, compile --warnings-as-errors
   testing:
     parameters:
