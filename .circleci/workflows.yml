@@ -66,7 +66,7 @@ jobs:
       - run: pwd
       - run: apk add -U g++ git
       - checkout:
-          path: ~/project
+          path: ~/circle-ci-monorepo
       - run: cd << parameters.path-to-build >>
       - run: ls
       - run: pwd
@@ -88,7 +88,7 @@ workflows:
     jobs:
       - say-project-one
       - build:
-          path-to-build: ~/project/project_one
+          path-to-build: ~/circle-ci-monorepo/project_one
       - testing:
           path-to-comand: ~/project_one
           requires:
