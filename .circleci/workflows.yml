@@ -61,6 +61,8 @@ jobs:
       path-to-build:
         type: string
     steps:
+      - run: ls
+      - run: pwd
       - run: apk add -U g++ git
       - checkout
       - run: cd << parameters.path-to-build >>
