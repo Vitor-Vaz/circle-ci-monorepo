@@ -60,7 +60,7 @@ jobs:
     parameters:
       path-to-build:
         type: string
-    working_directory: << parameters.path-to-comand >>
+    working_directory: << parameters.path-to-build>>
     steps:
       - run: ls
       - run: pwd
