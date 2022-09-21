@@ -73,6 +73,10 @@ jobs:
       - run: apk add -U g++ git
       - *mix_local_hex_and_rebar
       - run: mix do deps.get, compile --warnings-as-errors
+    - persist_to_workspace:
+        root: ~/
+        paths:
+          - project
   testing:
     executor: minimal-elixir
     parameters:
