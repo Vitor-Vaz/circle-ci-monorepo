@@ -60,12 +60,10 @@ jobs:
     parameters:
       path-to-build:
         type: string
-    working_directory: << parameters.path-to-build >>
     steps:
-      - run: pwd
       - run: apk add -U g++ git
       - checkout
-      - run: ls
+      - run: cd << parameters.path-to-build >>
       - run: mix do deps.get, compile --warnings-as-errors
   testing:
     parameters:
