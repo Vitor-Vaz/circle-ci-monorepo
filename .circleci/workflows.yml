@@ -57,14 +57,14 @@ jobs:
           command: "echo Project Two Has Been Modified!"
   build:
     executor: minimal-elixir
+    parameters:
+      path-to-build:
+        type: string
+    working_directory: << parameters.path-to-build >>
     steps:
       - run: apk add -U g++ git
       - checkout
       - run: mix do deps.get, compile --warnings-as-errors
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project
   testing:
     parameters:
       path-to-comand:
@@ -81,7 +81,8 @@ workflows:
     when: << pipeline.parameters.project-one-modified>>
     jobs:
       - say-project-one
-      - build
+      - build:
+          path-to-comand: ~/project_one
       - testing:
           path-to-comand: ~/project_one
   project-two-modified:
