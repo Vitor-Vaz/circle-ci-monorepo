@@ -74,12 +74,11 @@ jobs:
       - *mix_local_hex_and_rebar
       - run: mix do deps.get, compile --warnings-as-errors
   testing:
+    executor: minimal-elixir
     parameters:
       path-to-comand:
         type: string
     working_directory: << parameters.path-to-comand >>
-    docker:
-      - image: cimg/base:stable
     steps: 
       - run: pwd
       - *mix_local_hex_and_rebar
