@@ -64,6 +64,8 @@ jobs:
       - run: apk add -U g++ git
       - checkout
       - run: cd << parameters.path-to-build >>
+      - run: ls
+      - run: pwd
       - run: mix do deps.get, compile --warnings-as-errors
   testing:
     parameters:
