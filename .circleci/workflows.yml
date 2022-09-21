@@ -81,6 +81,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps: 
+      - run: pwd
       - *mix_local_hex_and_rebar
       - run: ls
       - run: mix test
