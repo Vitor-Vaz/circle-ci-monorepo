@@ -81,6 +81,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps: 
+      - *mix_local_hex_and_rebar
       - run: ls
       - run: mix test
 
@@ -92,7 +93,7 @@ workflows:
       - build:
           path-to-build: ~/circle-ci-monorepo/project_one
       - testing:
-          path-to-comand: ~/project_one
+          path-to-comand: ~/circle-ci-monorepo/project_one
           requires:
             - build
   project-two-modified:
