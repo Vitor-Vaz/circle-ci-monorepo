@@ -87,7 +87,7 @@ jobs:
     # working_directory: << parameters.path-to-comand >>
     steps: 
       - attach_workspace:
-          at: ~/circle-ci-monorepo
+          at: ~/
       - run: ls
       - run: pwd
       - *mix_local_hex_and_rebar
