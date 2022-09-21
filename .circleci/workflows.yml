@@ -76,9 +76,9 @@ jobs:
       - run: ls
       - run: pwd
       - persist_to_workspace:
-          root: ~/
+          root: ~/circle-ci-monorepo
           paths:
-            - project/project_one
+            - project_one
   testing:
     executor: minimal-elixir
     parameters:
