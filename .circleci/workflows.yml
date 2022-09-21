@@ -82,7 +82,7 @@ workflows:
     jobs:
       - say-project-one
       - build:
-          path-to-build: ~/project_one
+          path-to-build: project_one
       - testing:
           path-to-comand: ~/project_one
           requires:
