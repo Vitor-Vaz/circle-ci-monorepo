@@ -66,7 +66,7 @@ jobs:
       - run: pwd
       - run: apk add -U g++ git
       - checkout:
-        path: ~/project
+          path: ~/project
       - run: cd << parameters.path-to-build >>
       - run: ls
       - run: pwd
