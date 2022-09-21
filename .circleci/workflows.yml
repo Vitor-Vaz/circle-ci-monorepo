@@ -57,7 +57,7 @@ jobs:
     steps:
       - attach_workspace:
           at:  << parameters.path-to-comand >>
-      - run: mix test
+      - run: pwd
 
 workflows:
   project-one-modified:
