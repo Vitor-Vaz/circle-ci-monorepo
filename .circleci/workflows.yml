@@ -51,13 +51,11 @@ jobs:
     parameters:
       path-to-comand:
         type: string
-    #working_directory:
+    working_directory: << parameters.path-to-comand >>
     docker:
       - image: cimg/base:stable
-    steps:
-      - attach_workspace:
-          at:  << parameters.path-to-comand >>
-      - run: pwd
+    steps: 
+      - run: mix test
 
 workflows:
   project-one-modified:
