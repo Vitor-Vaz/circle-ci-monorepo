@@ -62,7 +62,7 @@ jobs:
         type: string
     working_directory: << parameters.path-to-build >>
     steps:
-      - run: ls
+      - run: pwd
       - run: apk add -U g++ git
       - checkout
       - run: ls
