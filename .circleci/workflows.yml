@@ -93,7 +93,7 @@ workflows:
       - build:
           path-to-build: ~/circle-ci-monorepo/project_one
       - testing:
-          path-to-comand: ~/circle-ci-monorepo/project_one
+          path-to-comand: ~/project_one
           requires:
             - build
   project-two-modified:
