@@ -87,7 +87,7 @@ workflows:
       - testing:
           path-to-comand: ~/project_one
           requires:
-            -build
+            - build
   project-two-modified:
     when: << pipeline.parameters.project-two-modified>>
     jobs:
