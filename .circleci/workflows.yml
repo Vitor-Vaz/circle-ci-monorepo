@@ -63,9 +63,9 @@ jobs:
     working_directory: << parameters.path-to-build >>
     steps:
       - run: apk add -U g++ git
-      - run: pwd
       - checkout
       - run: mix do deps.get, compile --warnings-as-errors
+      - run: pwd
   testing:
     parameters:
       path-to-comand:
