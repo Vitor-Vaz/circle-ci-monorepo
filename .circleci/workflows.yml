@@ -1,5 +1,13 @@
 version: 2.1
 
+executors:
+  minimal-elixir:
+    docker:
+      - image: &runtime hexpm/elixir:1.13.2-erlang-24.2.1-alpine-3.15.0
+        environment:
+          DOCKER_ENV: test
+          MIX_ENV: test
+
 orbs:
   azure-cli: circleci/azure-cli@1.1.0
   docker: circleci/docker@1.5.0
@@ -47,6 +55,16 @@ jobs:
       - run:
           name: "Say hello Project two"
           command: "echo Project Two Has Been Modified!"
+  build:
+    executor: minimal-elixir
+    steps:
+      - run: apk add -U g++ git
+      - checkout
+      - run: mix do deps.get, compile --warnings-as-errors
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
   testing:
     parameters:
       path-to-comand:
