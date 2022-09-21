@@ -64,8 +64,8 @@ jobs:
     steps:
       - run: apk add -U g++ git
       - checkout
-      - run: mix do deps.get, compile --warnings-as-errors
       - run: pwd
+      - run: mix do deps.get, compile --warnings-as-errors
   testing:
     parameters:
       path-to-comand:
