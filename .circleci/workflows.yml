@@ -76,7 +76,7 @@ jobs:
       - run: ls
       - run: pwd
       - persist_to_workspace:
-          root: ~/circle-ci-monorepo
+          root: /circle-ci-monorepo
           paths:
             - project_one
   testing:
