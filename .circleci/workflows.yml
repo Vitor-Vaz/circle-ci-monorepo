@@ -1,5 +1,19 @@
 version: 2.1
 
+executors:
+  minimal-elixir:
+    docker:
+      - image: &runtime hexpm/elixir:1.13.2-erlang-24.2.1-alpine-3.15.0
+        environment:
+          DOCKER_ENV: test
+          MIX_ENV: test
+
+aliases:
+  - &mix_local_hex_and_rebar
+    run: |
+      mix local.hex --force
+      mix local.rebar --force
+
 orbs:
   azure-cli: circleci/azure-cli@1.1.0
   docker: circleci/docker@1.5.0
@@ -47,19 +61,47 @@ jobs:
       - run:
           name: "Say hello Project two"
           command: "echo Project Two Has Been Modified!"
+  build:
+    executor: minimal-elixir
+    parameters:
+      path-to-build:
+        type: string
+    working_directory: << parameters.path-to-build>>
+    steps:
+      - checkout:
+          path: ~/project
+      - run: apk add -U g++ git
+      - *mix_local_hex_and_rebar
+      - run: mix do deps.get, compile --warnings-as-errors
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - project_one
+  testing:
+    executor: minimal-elixir
+    parameters:
+      path-to-comand:
+        type: string
+    working_directory: << parameters.path-to-comand >>
+    steps: 
+      - attach_workspace:
+          at: ~/project
+      - *mix_local_hex_and_rebar
+      - run: mix test
 
 workflows:
   project-one-modified:
-    when:
-      or:
-        - << pipeline.parameters.project-one-modified>>
+    when: << pipeline.parameters.project-one-modified>>
     jobs:
       - say-project-one
- 
+      - build:
+          path-to-build: ~/project/project_one
+      - testing:
+          path-to-comand: ~/project/project_one
+          requires:
+            - build
   project-two-modified:
-    when:
-      or:
-        - << pipeline.parameters.project-two-modified>>
+    when: << pipeline.parameters.project-two-modified>>
     jobs:
       - say-project-two
 
