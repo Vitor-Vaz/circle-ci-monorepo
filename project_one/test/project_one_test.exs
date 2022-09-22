@@ -3,6 +3,6 @@ defmodule ProjectOneTest do
   doctest ProjectOne
 
   test "greets the world" do
-    assert ProjectOne.hello() == :world_big
+    assert ProjectOne.hello() == :world
   end
 end

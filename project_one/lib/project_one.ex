@@ -13,6 +13,6 @@ defmodule ProjectOne do
 
   """
   def hello do
-    :world_big
+    :world
   end
 end
