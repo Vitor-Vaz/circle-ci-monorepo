@@ -45,14 +45,6 @@ commands:
             sudo apt install -y --no-install-recommends azure-functions-core-tools-3
 
 jobs:
-  say-project-one:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "Say hello Project One"
-          command: "echo Project One Has Been Modified!"
   say-project-two:
     docker:
       - image: cimg/base:stable
@@ -71,8 +63,43 @@ jobs:
       - checkout:
           path: ~/project
       - run: apk add -U g++ git
+      - restore_cache:
+          keys:
+            - v1-mixdeps-cache-{{ checksum "mix.lock" }}-{{ .Branch }}
+            - v1-mixdeps-cache-{{ checksum "mix.lock" }}-master
+      - unless:
+          condition: << pipeline.git.tag >>
+          steps:
+            - restore_cache:
+                keys:
+                  - v1-build-cache-{{ checksum "mix.lock" }}-{{ .Branch }}-{{ .Revision }}
+                  - v1-build-cache-{{ checksum "mix.lock" }}-{{ .Branch }}
+                  - v1-build-cache-{{ checksum "mix.lock" }}-master
+      - when:
+          condition: << pipeline.git.tag >>
+          steps:
+            - restore_cache:
+                keys:
+                  - v1-build-cache-{{ checksum "mix.lock" }}-<< pipeline.git.tag >>
       - *mix_local_hex_and_rebar
       - run: mix do deps.get, compile --warnings-as-errors
+      - save_cache:
+          key: v1-mixdeps-cache-{{ checksum "mix.lock" }}-{{ .Branch }}
+          paths:
+            - deps
+            - ~/.mix
+            - ~/.hex
+      - when:
+          condition: << pipeline.git.tag >>
+          steps:
+            - save_cache:
+                key: v1-build-cache-{{ checksum "mix.lock" }}-<< pipeline.git.tag >>
+                paths:
+                  - _build
+      - save_cache:
+          key: v1-build-cache-{{ checksum "mix.lock" }}-{{ .Branch }}
+          paths:
+            - _build
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -80,9 +107,9 @@ jobs:
   testing:
     executor: minimal-elixir
     parameters:
-      path-to-comand:
+      path-to-test:
         type: string
-    working_directory: << parameters.path-to-comand >>
+    working_directory: << parameters.path-to-test >>
     steps: 
       - attach_workspace:
           at: ~/project
@@ -93,11 +120,10 @@ workflows:
   project-one-modified:
     when: << pipeline.parameters.project-one-modified>>
     jobs:
-      - say-project-one
       - build:
           path-to-build: ~/project/project_one
       - testing:
-          path-to-comand: ~/project/project_one
+          path-to-test: ~/project/project_one
           requires:
             - build
   project-two-modified:

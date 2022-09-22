@@ -20,7 +20,8 @@ defmodule ProjectOne.MixProject do
   defp deps do
     [
       {:credo, "~> 1.6.3", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false},
+      {:jason, "~> 1.2.2"}
     ]
   end
 end
