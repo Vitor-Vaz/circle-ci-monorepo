@@ -85,7 +85,6 @@ workflows:
   project-one-modified:
     when: << pipeline.parameters.project-one-modified>>
     jobs:
-      - say-project-one
       - build:
           path-to-build: ~/project/project_one
       - testing:
