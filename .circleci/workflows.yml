@@ -69,14 +69,12 @@ jobs:
     working_directory: << parameters.path-to-build>>
     steps:
       - checkout:
-          path: ~/circle-ci-monorepo
+          path: ~/project
       - run: apk add -U g++ git
       - *mix_local_hex_and_rebar
       - run: mix do deps.get, compile --warnings-as-errors
-      - run: ls
-      - run: pwd
       - persist_to_workspace:
-          root: ~/circle-ci-monorepo
+          root: ~/project
           paths:
             - project_one
   testing:
@@ -87,9 +85,7 @@ jobs:
     working_directory: << parameters.path-to-comand >>
     steps: 
       - attach_workspace:
-          at: ~/circle-ci-monorepo
-      - run: ls
-      - run: pwd
+          at: ~/project
       - *mix_local_hex_and_rebar
       - run: mix test
 
@@ -99,9 +95,9 @@ workflows:
     jobs:
       - say-project-one
       - build:
-          path-to-build: ~/circle-ci-monorepo/project_one
+          path-to-build: ~/project/project_one
       - testing:
-          path-to-comand: ~/circle-ci-monorepo/project_one
+          path-to-comand: ~/project/project_one
           requires:
             - build
   project-two-modified:
