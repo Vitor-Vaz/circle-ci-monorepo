@@ -101,7 +101,7 @@ workflows:
       - build:
           path-to-build: ~/project/project_one
       - testing:
-          path-to-comand: ~/project_one
+          path-to-comand: ~/project/project_one
           requires:
             - build
   project-two-modified:
