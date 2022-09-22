@@ -63,8 +63,43 @@ jobs:
       - checkout:
           path: ~/project
       - run: apk add -U g++ git
+      - restore_cache:
+          keys:
+            - v1-mixdeps-cache-{{ checksum "mix.lock" }}-{{ .Branch }}
+            - v1-mixdeps-cache-{{ checksum "mix.lock" }}-master
+      - unless:
+          condition: << pipeline.git.tag >>
+          steps:
+            - restore_cache:
+                keys:
+                  - v1-build-cache-{{ checksum "mix.lock" }}-{{ .Branch }}-{{ .Revision }}
+                  - v1-build-cache-{{ checksum "mix.lock" }}-{{ .Branch }}
+                  - v1-build-cache-{{ checksum "mix.lock" }}-master
+      - when:
+          condition: << pipeline.git.tag >>
+          steps:
+            - restore_cache:
+                keys:
+                  - v1-build-cache-{{ checksum "mix.lock" }}-<< pipeline.git.tag >>
       - *mix_local_hex_and_rebar
       - run: mix do deps.get, compile --warnings-as-errors
+      - save_cache:
+          key: v1-mixdeps-cache-{{ checksum "mix.lock" }}-{{ .Branch }}
+          paths:
+            - deps
+            - ~/.mix
+            - ~/.hex
+      - when:
+          condition: << pipeline.git.tag >>
+          steps:
+            - save_cache:
+                key: v1-build-cache-{{ checksum "mix.lock" }}-<< pipeline.git.tag >>
+                paths:
+                  - _build
+      - save_cache:
+          key: v1-build-cache-{{ checksum "mix.lock" }}-{{ .Branch }}
+          paths:
+            - _build
       - persist_to_workspace:
           root: ~/project
           paths:
