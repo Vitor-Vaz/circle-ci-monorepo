@@ -45,14 +45,6 @@ commands:
             sudo apt install -y --no-install-recommends azure-functions-core-tools-3
 
 jobs:
-  say-project-one:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "Say hello Project One"
-          command: "echo Project One Has Been Modified!"
   say-project-two:
     docker:
       - image: cimg/base:stable
@@ -68,9 +60,9 @@ jobs:
         type: string
     working_directory: << parameters.path-to-build>>
     steps:
+      - run: apk add -U g++ git
       - checkout:
           path: ~/project
-      - run: apk add -U g++ git
       - *mix_local_hex_and_rebar
       - run: mix do deps.get, compile --warnings-as-errors
       - persist_to_workspace:
@@ -80,9 +72,9 @@ jobs:
   testing:
     executor: minimal-elixir
     parameters:
-      path-to-comand:
+      path-to-test:
         type: string
-    working_directory: << parameters.path-to-comand >>
+    working_directory: << parameters.path-to-test >>
     steps: 
       - attach_workspace:
           at: ~/project
@@ -97,7 +89,7 @@ workflows:
       - build:
           path-to-build: ~/project/project_one
       - testing:
-          path-to-comand: ~/project/project_one
+          path-to-test: ~/project/project_one
           requires:
             - build
   project-two-modified:
