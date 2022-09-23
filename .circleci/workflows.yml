@@ -104,6 +104,19 @@ jobs:
           root: ~/project
           paths:
             - project_one
+  lint:
+    executor: minimal-elixir
+    parameters:
+      path-to-test:
+        type: string
+    working_directory: << parameters.path-to-lint >>
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - *mix_local_hex_and_rebar
+      - run: mix deps.unlock --check-unused
+      - run: mix format --check-formatted
+      - run: mix credo --strict
   testing:
     executor: minimal-elixir
     parameters:
@@ -122,6 +135,10 @@ workflows:
     jobs:
       - build:
           path-to-build: ~/project/project_one
+      - lint:
+          path-to-test: ~/project/project_one
+          requires:
+            - build
       - testing:
           path-to-test: ~/project/project_one
           requires:
