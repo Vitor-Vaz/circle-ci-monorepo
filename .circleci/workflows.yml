@@ -136,7 +136,7 @@ workflows:
       - build:
           path-to-build: ~/project/project_one
       - lint:
-          path-to-test: ~/project/project_one
+          path-to-lint: ~/project/project_one
           requires:
             - build
       - testing:
