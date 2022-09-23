@@ -107,7 +107,7 @@ jobs:
   lint:
     executor: minimal-elixir
     parameters:
-      path-to-test:
+      path-to-lint:
         type: string
     working_directory: << parameters.path-to-lint >>
     steps:
