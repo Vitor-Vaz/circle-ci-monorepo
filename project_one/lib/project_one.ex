@@ -10,6 +10,7 @@ defmodule ProjectOne do
 
       iex> ProjectOne.hello()
       :world
+      testing
 
   """
   def hello do
