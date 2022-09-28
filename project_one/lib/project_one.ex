@@ -13,7 +13,7 @@ defmodule ProjectOne do
 
   """
   def hello(start? \\ false) do
-    config = "config"
+    # config = "config"
 
     if start? do
       "children"
