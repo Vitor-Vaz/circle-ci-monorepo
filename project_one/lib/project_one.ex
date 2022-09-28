@@ -10,10 +10,17 @@ defmodule ProjectOne do
 
       iex> ProjectOne.hello()
       :world
-      testing
 
   """
-  def hello do
+  def hello(start? \\ false) do
+    config = "config"
+
+    if start? do
+      "children"
+    else
+      nil
+    end
+
     :world
   end
 end
