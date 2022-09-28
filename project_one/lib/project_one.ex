@@ -12,7 +12,15 @@ defmodule ProjectOne do
       :world
 
   """
-  def hello do
+  def hello(start? \\ false) do
+    # config = "config"
+
+    if start? do
+      "children"
+    else
+      nil
+    end
+
     :world
   end
 end
